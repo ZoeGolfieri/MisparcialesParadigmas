@@ -19,10 +19,10 @@ autoPrueba = Auto {
 } 
  
 --1a
-estaCerca::Auto->Auto->Bool
-estaCerca auto otroAuto=((<10).distanciaEntre auto) otroAuto && auto /= otroAuto
+estaCerca::Auto->Auto->Bool 
+estaCerca auto otroAuto=((<10).distanciaEntre auto) otroAuto && auto /= otroAuto !!
 
-distanciaEntre::Auto->Auto->Int
+ distanciaEntre::Auto->Auto->Int
 distanciaEntre auto otroAuto= abs (distanciaRecorrida auto - distanciaRecorrida otroAuto)
 
 --1b
