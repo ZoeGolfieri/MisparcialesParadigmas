@@ -51,9 +51,17 @@ atiendeSola(Persona, Dia, HorarioDeterminado):-
 % Punto 4
 
 % PosibilidadesDeAtencion(Personas, Dia)
-% posibilidadesDeAtencion(Personas, Dia):-
-   % atiende(_, Dia,_,_),
-  % findall(Persona, atiende(Persona, Dia, _, _), PersonasPosibles).
+posibilidadesDeAtencion(Dia, Personas):-
+   atiende(_,Dia,_,_),
+   findall(Persona, atiende(Persona, Dia, _, _), PersonasPosibles),
+   combinar(PersonasPosibles, Personas).
+
+combinar([], []).
+combinar([Persona|PersonasPosibles], [Persona|Personas]):-
+   combinar(PersonasPosibles, Personas).
+combinar([_|PersonasPosibles], Personas):-
+   combinar(PersonasPosibles, Personas).
+  
 
 % Punto 5
 
