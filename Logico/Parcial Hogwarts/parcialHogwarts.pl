@@ -149,6 +149,7 @@ esDe(luna, ravenclaw).
 % magoEsBuenAlumno(mago)
 magoEsBuenAlumno(Mago):-
     mago(Mago),
+    accionQueRealizo(Mago, _),
     forall(
         accionQueRealizo(Mago, Accion),
         buenaAccion(Accion)
@@ -157,10 +158,9 @@ magoEsBuenAlumno(Mago):-
 % Punto 1.b
 % accionRecurrente(Accion) 
 accionRecurrente(Accion) :-
-    accion(Accion),
-    findall(Accion, accionQueRealizo(_, Accion), Acciones),
-    length(Acciones, CantMagosQueLaRealizaron),
-    CantMagosQueLaRealizaron > 1.
+    accionQueRealizo(Mago, Accion),
+    accionQueRealizo(Mago1, Accion),
+    Mago \= Mago1.
 
 % Punto 2
 % puntajeTotal(Casa, PuntajeTotal)
