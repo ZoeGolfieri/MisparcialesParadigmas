@@ -1,11 +1,4 @@
 % Base de conocimientos
-persona(dodain).
-persona(lucas).
-persona(juanC).
-persona(juanFdS).
-persona(leoC).
-persona(martu).
-persona(vale).
 
 % atiende(Persona, Dia, HorarioEntrada, HorarioSalida)
 atiende(dodain, lunes, 9, 15).
@@ -70,22 +63,22 @@ combinar([_|PersonasPosibles], Personas):-
 % bebida(alcoholicas, cantidad)
 % fecha(dia, mes)
 
-%ventas(Persona, Dia, Fecha, venta)
-ventas(dodain, lunes, fecha(10, 8), [golosinas(1200), cigarrillos([jockey]), golosinas(50)]).
-ventas(dodain, miercoles, fecha(12, 8), [bebida(alcoholica, 8), bebida(noAlcoholica, 1), golosinas(10)]).
-ventas(martu, miercoles, fecha(12, 8), [golosinas(1000), cigarrillos([chesterfield, colorado, parisiennes])]).
-ventas(lucas, martes, fecha(11, 8), [golosinas(600)]).
-ventas(lucas, martes, fecha(18, 8), [bebida(noAlcoholica, 2), cigarrillos([derby])]).
+%ventas(Persona, Fecha, venta)
+ventas(dodain, fecha(10, 8), [golosinas(1200), cigarrillos([jockey]), golosinas(50)]).
+ventas(dodain, fecha(12, 8), [bebida(alcoholica, 8), bebida(noAlcoholica, 1), golosinas(10)]).
+ventas(martu, fecha(12, 8), [golosinas(1000), cigarrillos([chesterfield, colorado, parisiennes])]).
+ventas(lucas, fecha(11, 8), [golosinas(600)]).
+ventas(lucas, fecha(18, 8), [bebida(noAlcoholica, 2), cigarrillos([derby])]).
 
 vendedorSuertudo(Persona):-
-   ventas(Persona, _, _, _),
-   forall(ventas(Persona, _, _, [Venta|_]), esImportante(Venta)).
+   ventas(Persona, _, _),
+   forall(ventas(Persona, _, [Venta|_]), esImportante(Venta)).
 
 esImportante(golosinas(Precio)):-
    Precio > 100.
 
-esImportante(cigarrillos(Lista)):-
-  length(Lista, CantidadMarcas),
+esImportante(cigarrillos(Marcas)):-
+  length(Marcas, CantidadMarcas),
   CantidadMarcas > 2.
 
 esImportante(bebida(alcoholica, _)).
