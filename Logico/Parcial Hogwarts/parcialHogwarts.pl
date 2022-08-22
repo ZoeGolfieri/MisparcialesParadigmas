@@ -77,21 +77,16 @@ magoPuedeQuedarEn(hermione, gryffindor).
 % Punto 4
 % cadenaDeAmistades(Magos)
 cadenaDeAmistades(Magos):-
-    todosSonAmistosos(Magos),
-    mismaCasaQueElSiguiente(Magos).
+todosSonAmistososYmismaCasaQueElSiguiente(Magos).
 
-todosSonAmistosos(Magos):-
-    forall(member(Mago, Magos), 
-        caracteristicaMago(Mago, amistoso)).
-
-mismaCasaQueElSiguiente(Magos):-
-    forall(consecutivos(Mago1, Mago2, Magos),
-    puedenQuedarEnLaMismaCasa(Mago1, Mago2, _)).
+todosSonAmistososYmismaCasaQueElSiguiente(Magos):-
+forall((member(Mago, Magos), consecutivos(Mago1, Mago2, Magos)),
+        (caracteristicaMago(Mago, amistoso),puedenQuedarEnLaMismaCasa(Mago1, Mago2, _))).
 
 consecutivos(Mago1, Mago2, Lista):-
     nth1(IndiceAnterior, Lista, Mago1),
-    IndiceSiguiente is IndiceAnterior + 1,
-    nth1(IndiceSiguiente, Lista, Mago2).
+    nth1(IndiceSiguiente, Lista, Mago2),
+    IndiceSiguiente is IndiceAnterior + 1.
   
   puedenQuedarEnLaMismaCasa(Mago1, Mago2, Casa):-
     magoPuedeQuedarEn(Mago1, Casa),
@@ -100,26 +95,16 @@ consecutivos(Mago1, Mago2, Lista):-
 
 %%%%% Parte 2. La copa de las casas %%%%
 % accion(Accion)
-accion(andarDeNocheFueraDeLaCama).
-accion(irALugarProhibido(bosque)).
-accion(irALugarProhibido(biblioteca)).
-accion(irALugarProhibido(tercerPiso)).
-accion(ganarPartidaAjedrez).
-accion(utilizarIntelecto).
-accion(ganarleAVoldemort).
+accion(andarDeNocheFueraDeLaCama, mala).
+accion(irALugarProhibido(bosque), mala).
+accion(irALugarProhibido(biblioteca), mala).
+accion(irALugarProhibido(tercerPiso), mala).
+accion(ganarPartidaAjedrez, buena).
+accion(utilizarIntelecto, buena).
+accion(ganarleAVoldemort, buena).
+accion(preguntaEnClase(paraderoBezoar, 20, snape)).
+accion(preguntaEnClase(levitarPluma, 25, flitwick)).
 
-% malaAccion(Accion)
-malaAccion(andarDeNocheFueraDeLaCama).
-malaAccion(irALugarProhibido(bosque)).
-malaAccion(irALugarProhibido(biblioteca)).
-malaAccion(irALugarProhibido(tercerPiso)).
-
-% buenaAccion(Accion).
-buenaAccion(ganarPartidaAjedrez).
-buenaAccion(utilizarIntelecto).
-buenaAccion(ganarleAVoldemort).
-
-% puntajeAccion(Accion, Puntaje)
 puntajeAccion(andarDeNocheFueraDeLaCama, -50).
 puntajeAccion(irALugarProhibido(bosque), -50).
 puntajeAccion(irALugarProhibido(biblioteca), -10).
@@ -127,6 +112,10 @@ puntajeAccion(irALugarProhibido(tercerPiso), -75).
 puntajeAccion(ganarPartidaAjedrez, 50).
 puntajeAccion(utilizarIntelecto, 50).
 puntajeAccion(ganarleAVoldemort, 60).
+puntajeAccion(preguntaEnClase(_, Dificultad, Profesor), Dificultad):-
+    Profesor \= snape.
+puntajeAccion(preguntaEnClase(_, Dificultad, snape), Puntos):-
+    Puntos is Dificultad / 2.
 
 % accionQueRealizo(Mago, Accion)
 accionQueRealizo(harry, andarDeNocheFueraDeLaCama).
@@ -137,6 +126,8 @@ accionQueRealizo(harry, irALugarProhibido(tercerPiso)).
 accionQueRealizo(ron, ganarPartidaAjedrez).
 accionQueRealizo(hermione, utilizarIntelecto).
 accionQueRealizo(harry, ganarleAVoldemort).
+accionQueRealizo(hermione, preguntaEnClase(paraderoBezoar, 20, snape)).
+accionQueRealizo(hermione, preguntaEnClase(levitarPluma, 25, flitwick)).
 
 % esDe(Mago, Casa)
 esDe(hermione, gryffindor).
@@ -148,12 +139,9 @@ esDe(luna, ravenclaw).
 % Punto 1.a
 % magoEsBuenAlumno(mago)
 magoEsBuenAlumno(Mago):-
-    mago(Mago),
     accionQueRealizo(Mago, _),
-    forall(
-        accionQueRealizo(Mago, Accion),
-        buenaAccion(Accion)
-        ).
+    not((accionQueRealizo(Mago, Accion),
+    accion(Accion, mala))).
 
 % Punto 1.b
 % accionRecurrente(Accion) 
@@ -170,13 +158,10 @@ puntajeTotal(Casa, PuntajeTotal):-
     sumlist(PuntosDeTodos, PuntajeTotal).
 
 % puntosMiembroDeLaCasa(Mago, Casa, Puntos)
-puntosMiembroDeLaCasa(Mago, Casa, Puntos):-
-    mago(Mago),
+puntosMiembroDeLaCasa(Mago, Casa, PuntosAcciones):-
     esDe(Mago, Casa),
     findall(Puntaje, (accionQueRealizo(Mago, Accion), puntajeAccion(Accion, Puntaje)), Puntajes),
-    sumlist(Puntajes, PuntosAcciones),
-    puntosEnClase(Mago, PuntosClase),
-    Puntos is PuntosClase + PuntosAcciones.
+    sumlist(Puntajes, PuntosAcciones).
 
 % Punto 3
 % casaGanadora(Casa)
@@ -187,30 +172,3 @@ casaGanadora(Casa):-
     puntajeTotal(_, PuntajeTotal2),
     PuntajeTotal1 >= PuntajeTotal2
         ).
-
-% Punto 4
-% preguntaEnClase(PersonaQueResponde, Pregunta, Dificultad, ProfesorQueRealizo)
-preguntaEnClase(hermione, paraderoBezoar, 20, snape).
-preguntaEnClase(hermione, levitarPluma, 25, flitwick).
-
-puntosEnClase(Mago, PuntosTotales):-
-    mago(Mago),
-    findall(Puntos, magoGanoPorPregunta(Mago, Puntos), PuntosClase),
-    sumlist(PuntosClase, PuntosTotales).
-
-magoGanoPorPregunta(Mago, Puntos):-
-    preguntaEnClase(Mago, Pregunta, _, _),
-    puntosPreguntas(Pregunta, Puntos).
-
-puntosPreguntas(Pregunta, Dificultad):-
-    preguntaEnClase(_, Pregunta, Dificultad, Profesor),
-    Profesor \= snape.
-
-puntosPreguntas(Pregunta, Puntos):-
-    preguntaEnClase(_, Pregunta, Dificultad, snape),
-    Puntos is Dificultad / 2.
-
-
-
-
-
