@@ -1,4 +1,4 @@
-%Base de conocimientos
+% Base de conocimientos
 
 %rata(Nombre)
 rata(remy).
