@@ -1,22 +1,22 @@
 % Base de conocimientos
 
-%rata(Nombre)
+% rata(Nombre)
 rata(remy).
 rata(emile).
 rata(django).
 
-%viveEn(Nombre, Lugar)
+% viveEn(Nombre, Lugar)
 viveEn(remy, gusteaus).
 viveEn(emile, barMalabar).
 viveEn(django, pizzeriaJeSuis).
 
-%persona(NombrePersona)
+% persona(NombrePersona)
 persona(linguini).
 persona(colette).
 persona(horst).
 persona(amelie).
 
-%plato(Nombre, Tipo)
+% plato(Nombre, Tipo)
 plato(ratatouille).
 plato(sopa).
 plato(salmonAsado).
@@ -24,7 +24,7 @@ plato(ensaladaRusa, entrada([papa, zanahoria, arvejas, huevo, mayonesa])).
 plato(bifeDeChorizo, principal(pure, 25)).
 plato(frutillasConCrema, postre(265)).
 
-%platos(Persona, Comida)
+% platos(Persona, Comida)
 %comida(Plato, Experiencia)
 platos(linguini, comida(ratatouille, 3)).
 platos(linguini, comida(sopa, 5)).
