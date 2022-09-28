@@ -123,6 +123,11 @@ precioVueloMillas(vuelo(Ciudad, OtraCiudad), PrecioMillas):-
     not(ciudadesQuedanEnElMismoPais(Ciudad, OtraCiudad)),
     PrecioMillas is PrecioVuelo * 0,2.
 
+tieneMillasNecesarias(Persona, Millas, PrecioVueloMillas):-
+    millasDePersona(Persona, Millas),
+    precioVueloMillas(_, PrecioVueloMillas),
+    Millas > PrecioVueloMillas.
+
 tieneVuelo(vuelo(Ciudad, OtraCiudad), PrecioVuelo):-
     aeropuertoEncuentraEn(AeropuertoSalida, Ciudad),
     aeropuertoEncuentraEn(AeropuertoLlegada, OtraCiudad),
@@ -177,5 +182,7 @@ lugarMasBarato(Ciudad, Lugares):-
         member(Lugar, Lugares),
         precioVuelo(Vuelo, Precio)
         ).
+
+% Punto 7, tienemillasnecesarias, persona, ejemplos
 
    
