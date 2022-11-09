@@ -3,7 +3,7 @@ import resultado.*
 import presentismo.*
 
 object pepe {
-	var categoria = cadete
+	var property categoria = cadete
 	
 	var faltas = 0	
 	var bonoPresentismo = bonoPresentismoNada
@@ -32,10 +32,6 @@ object pepe {
 
 	method bonoResultado(unBonoResultado) {
 		bonoResultado = unBonoResultado
-	}
-	
-	method categoria(unaCategoria) {
-		categoria = unaCategoria
 	}
 	
 	method faltas(unasFaltas) {
