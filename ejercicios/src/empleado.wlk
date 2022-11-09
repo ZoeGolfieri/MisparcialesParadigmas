@@ -33,7 +33,6 @@ object pepe {
 	method bonoResultado(unBonoResultado) {
 		bonoResultado = unBonoResultado
 	}
-	
 	method faltas(unasFaltas) {
 		faltas = unasFaltas
 	}
